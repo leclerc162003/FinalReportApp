@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "282799936269",
+    "project_id": "internship-81576",
+    "storage_bucket": "internship-81576.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282799936269:android:db5f57db00032ad25c5644",
+        "android_client_info": {
+          "package_name": "sg.edu.np.internshipreport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282799936269-vdhmaslvpor3b3g3606nqrf5rb9u4epv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQal20PQ1O-L0p9afy3-ZalkS6Z16HC0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282799936269-vdhmaslvpor3b3g3606nqrf5rb9u4epv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
