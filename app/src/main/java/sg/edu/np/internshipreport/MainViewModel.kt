@@ -2,8 +2,12 @@ package sg.edu.np.internshipreport
 
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import androidx.core.view.isVisible
 import androidx.databinding.BaseObservable
-import androidx.lifecycle.MutableLiveData
+import androidx.databinding.Bindable
+import androidx.databinding.BindingAdapter
 
 class MainViewModel : BaseObservable(){
 
@@ -14,20 +18,31 @@ class MainViewModel : BaseObservable(){
     //which will set a textview in the View end to prompt the user login has failed.
 
     val repository : MainRepository = MainRepository()
-    val failed = MutableLiveData<User>( User(View.INVISIBLE, 0))
+    var visibility : Boolean = false
 
     fun signIn(email : String, pass : String){
+
+        visibility = !repository.signInUser(email, pass)
+
         if(repository.signInUser(email, pass)){
-            failed.value = User(View.INVISIBLE, 0)
-            //notifyPropertyChanged(BR.obj)
+            visibility = false
+            notifyPropertyChanged(BR.aVisibility)
+        } else{
+            visibility = true
+            notifyPropertyChanged(BR.aVisibility)
         }
-        else {
-            failed.value = User(View.VISIBLE, 0)
-        }
-        notifyPropertyChanged(BR.obj)
-        notifyPropertyChanged(BR.viewModel)
-        Log.d("show me", failed.value!!.loginSuccess.toString())
+        Log.d("show me", visibility.toString())
     }
+
+    @Bindable
+    fun getAVisibility(): Int {
+        return if (visibility) {
+            VISIBLE
+        } else {
+            GONE
+        }
+    }
+
 
 
 }
