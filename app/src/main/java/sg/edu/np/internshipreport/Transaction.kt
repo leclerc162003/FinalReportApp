@@ -7,7 +7,6 @@ class Transaction(id : String ="", AccountTo : String = "", transactionAmount : 
     private var id : String = id
     private var AccountTo : String = AccountTo
     private var transactionAmount : String = transactionAmount
-    //private var date : Date = Calendar.getInstance().time
     private var transactionDate : String = transactionDate
 
     fun getId() : String{return id}

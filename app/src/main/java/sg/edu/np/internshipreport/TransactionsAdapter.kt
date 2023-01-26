@@ -20,7 +20,7 @@ class TransactionsAdapter(context : Context, transactionList : ArrayList<Transac
 
     override fun onBindViewHolder(holder: TransactionsViewHolder, position: Int) {
         val transaction = list.get(position)
-        holder.transactionAmount?.text = transaction.gettransactionAmount().toString()
+        holder.transactionAmount?.text = "${transaction.gettransactionAmount()}.00 SGD"
         holder.transactionName?.text = transaction.getAccountTo()
         holder.transactionDate?.text = transaction.gettransactionDate().toString()
     }

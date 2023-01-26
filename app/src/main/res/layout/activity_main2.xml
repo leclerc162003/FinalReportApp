@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F44336"
-    tools:context=".MainActivity2">
+    tools:context=".HomePage">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/transactionsView"
         android:layout_width="361dp"
-        android:layout_height="149dp"
+        android:layout_height="179dp"
         android:layout_marginBottom="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,14 +47,13 @@
         android:id="@+id/welcomeName3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-medium"
         android:text="Transactions"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/transactionsView"
-        app:layout_constraintStart_toStartOf="@+id/welcomeName2"
-        app:layout_constraintTop_toBottomOf="@+id/accountsView"
-        app:layout_constraintVertical_bias="0.547" />
+        app:layout_constraintStart_toStartOf="@+id/welcomeName2" />
 
     <TextView
         android:id="@+id/accountBalance"
@@ -69,23 +68,34 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accountsView"
-        android:layout_width="359dp"
-        android:layout_height="220dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/seeMore"
+        android:layout_width="360dp"
+        android:layout_height="236dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/welcomeName3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.596"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/transactionsView" />
 
     <TextView
         android:id="@+id/seeMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="see more"
+        android:layout_marginBottom="16dp"
+        android:text="View Transactions"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/transactionsView"
         app:layout_constraintEnd_toEndOf="@+id/accountsView" />
+
+    <TextView
+        android:id="@+id/seeAccounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Accounts"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/accountsView"
+        app:layout_constraintEnd_toEndOf="@+id/accountsView"
+        app:layout_constraintTop_toTopOf="@+id/welcomeName2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
