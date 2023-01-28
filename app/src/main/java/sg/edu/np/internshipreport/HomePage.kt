@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
@@ -21,24 +22,31 @@ class HomePage : AppCompatActivity() {
 
     val transactionList: ArrayList<Transaction> = ArrayList<Transaction>()
     val accountList : ArrayList<Account> = ArrayList()
+    var is2FA : Boolean = false
+    private lateinit var binding: ActivityMain2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR)
+        getSupportActionBar()?.hide()
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar()?.hide();
-
-        val binding: ActivityMain2Binding = ActivityMain2Binding.inflate(layoutInflater)
+        binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+        check2FACompleted()
 
         Firebase.auth.uid?.let {
             database.child("Users").child(it).get().addOnSuccessListener() {
 
                 binding.welcomeName.text = "Welcome, ${it.child("name").value.toString()}"
 
-                val formatter = DecimalFormat("#,###,###")
-                binding.accountBalance.text =
-                    "$${formatter.format(it.child("accountBalance").value.toString().toInt())}.00 SGD"
+                if(is2FA) {
+                    val formatter = DecimalFormat("#,###,###")
+                    binding.accountBalance.text = "$${formatter.format(it.child("accountBalance").value.toString().toLong())}.00 SGD"
+                } else {
+                    binding.accountBalance.text = "$ XXXX.XX XXX"
+                }
 
             }.addOnFailureListener {
                 Log.d("firebase", it.toString())
@@ -123,8 +131,13 @@ class HomePage : AppCompatActivity() {
         }
 
         binding.seeAccounts.setOnClickListener{
-            val i = Intent(this, OTPActivity::class.java)
-            this.startActivity(i)
+            if(is2FA) {
+                val i = Intent(this, AccountsActivity::class.java)
+                this.startActivity(i)
+            } else{
+                val i = Intent(this, OTPActivity::class.java)
+                this.startActivity(i)
+            }
         }
 
 
@@ -144,6 +157,53 @@ class HomePage : AppCompatActivity() {
         onGetDataListener.onStart()
 
         database.child("Users").child(Firebase.auth.uid!!).child("transactions").orderByKey().limitToFirst(5).get().addOnSuccessListener {
+            onGetDataListener.onSuccess(it)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        check2FACompleted()
+    }
+
+    fun check2FACompleted(){
+        check2FA(object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                     is2FA = dataSnapshot.value.toString().toBoolean()
+//                    if(is2FA){
+//                        Firebase.auth.uid?.let {
+//                            database.child("Users").child(it).get().addOnSuccessListener() {
+//
+//                                binding.welcomeName.text = "Welcome, ${it.child("name").value.toString()}"
+//
+//                                val formatter = DecimalFormat("#,###,###")
+//                                binding.accountBalance.text =
+//                                    "$${formatter.format(it.child("accountBalance").value.toString().toInt())}.00 SGD"
+//
+//                            }.addOnFailureListener {
+//                                Log.d("firebase", it.toString())
+//                            }
+//                        }
+//                    }
+                }
+            }
+
+            override fun onStart() {
+                Log.d(",","")
+            }
+
+            override fun onFailure() {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun check2FA(onGetDataListener: OnGetDataListener) {
+
+        onGetDataListener.onStart()
+
+        database.child("OTP").child(Firebase.auth.uid!!).get().addOnSuccessListener {
             onGetDataListener.onSuccess(it)
         }
     }

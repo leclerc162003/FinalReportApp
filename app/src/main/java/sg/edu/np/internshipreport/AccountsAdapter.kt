@@ -38,13 +38,21 @@ class AccountsAdapter(context : Context, accountList : ArrayList<Account>) : Rec
             override fun onSuccess(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
                     is2FA =  dataSnapshot.value.toString().toBoolean()
-                    val account = list.get(position)
-                    if(is2FA)
-                        holder.accountAmount?.text = "$${account.getaccountBalance()}.00 SGD"
-                    else
-                        holder.accountAmount?.text = "$ XXXX.XX SGD"
+                    val account = list[position]
+                    if(is2FA) {
+                        holder.accountType?.text = account.getaccountType()
+                        if(account.getid()[0].toString() == "9")
+                            holder.accountAmount?.text = "$${account.getaccountBalance()}.00 SGD"
+                        else if(account.getid()[0].toString() == "8")
+                            holder.accountAmount?.text = "$${account.getaccountBalance()}.00 USD"
 
-                    holder.accountType?.text = account.getaccountType()
+                    }
+                    else{
+                        holder.accountAmount?.text = "$ XXXX.XX XXX"
+
+                        holder.accountType?.text = account.getaccountType().substring(0,13)
+                    }
+
                 }
             }
 

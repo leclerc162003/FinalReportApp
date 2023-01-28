@@ -1,9 +1,11 @@
 package sg.edu.np.internshipreport
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
+import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -22,8 +24,10 @@ class AccountsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar()?.hide();
+        requestWindowFeature(Window.FEATURE_ACTION_BAR)
+        getSupportActionBar()?.hide()
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         val binding : ActivityAccountsBinding = ActivityAccountsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -61,6 +65,12 @@ class AccountsActivity : AppCompatActivity() {
 
         })
 
+
+
+        binding.backButton.setOnClickListener {
+            val i = Intent(this, HomePage::class.java)
+            this.startActivity(i)
+        }
 
 
     }

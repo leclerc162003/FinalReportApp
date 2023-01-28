@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
@@ -25,11 +26,14 @@ class OTPActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar()?.hide();
+        requestWindowFeature(Window.FEATURE_ACTION_BAR)
+        getSupportActionBar()?.hide()
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         val binding : ActivityOtpactivityBinding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getRandomNumberString()
+        Firebase.auth?.uid?.let { database.child("OTP").child(it).child("OTP KEY").setValue(OTP)}
 
         binding.submitButton.setOnClickListener {
             if (binding.otp.text.isEmpty()){

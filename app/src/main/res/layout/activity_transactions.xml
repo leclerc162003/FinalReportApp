@@ -4,7 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#17608A"
     tools:context=".TransactionsActivity">
+
+    <Button
+        android:id="@+id/backButton2"
+        android:layout_width="49dp"
+        android:layout_height="48dp"
+        android:backgroundTint="#1BBAFF"
+        app:icon="?attr/actionModeCloseDrawable"
+        app:iconGravity="end"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -19,6 +32,7 @@
         android:id="@+id/load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#1BBAFF"
         android:text="Load More"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
@@ -32,6 +46,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Your Transactions"
+        android:textColor="#FFFFFF"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
