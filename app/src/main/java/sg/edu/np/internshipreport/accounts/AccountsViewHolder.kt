@@ -1,4 +1,4 @@
-package sg.edu.np.internshipreport
+package sg.edu.np.internshipreport.accounts
 
 import android.view.View
 import android.widget.TextView

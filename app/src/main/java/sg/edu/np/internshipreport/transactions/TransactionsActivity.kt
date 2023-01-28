@@ -1,4 +1,4 @@
-package sg.edu.np.internshipreport
+package sg.edu.np.internshipreport.transactions
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +12,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import sg.edu.np.internshipreport.HomePage
+import sg.edu.np.internshipreport.classes.Transaction
 import sg.edu.np.internshipreport.databinding.ActivityTransactionsBinding
-import sg.edu.np.internshipreport.databinding.TransactionViewholderBinding
+import sg.edu.np.internshipreport.firebase.FirebaseManager
+import sg.edu.np.internshipreport.listeners.OnGetDataListener
 
 class TransactionsActivity : AppCompatActivity() {
 
@@ -22,6 +25,8 @@ class TransactionsActivity : AppCompatActivity() {
     private var database: DatabaseReference = firebase.reference
 
     val transactionList: ArrayList<Transaction> = ArrayList<Transaction>()
+
+    private lateinit var transactionsAdapter : TransactionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +38,35 @@ class TransactionsActivity : AppCompatActivity() {
         setContentView(binding.root)
         val transactionsRecyclerView = binding.recyclerView
 
-        val transactionsAdapter = TransactionsAdapter(this, transactionList)
+        transactionsAdapter = TransactionsAdapter(this, transactionList)
         val layoutManager = LinearLayoutManager(this)
 
         transactionsRecyclerView.layoutManager = layoutManager
 
         transactionsRecyclerView.adapter = transactionsAdapter
 
-        getTransactions1(object : OnGetDataListener{
+        getTransactions()
+
+
+        binding.load.setOnClickListener {
+            getRemainingTransactions()
+
+        }
+
+        binding.backButton.setOnClickListener {
+            val i = Intent(this, HomePage::class.java)
+            this.startActivity(i)
+        }
+
+
+    }
+
+
+
+
+    private fun getTransactions() {
+
+        FirebaseManager().getTransactions(object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
                     for (transaction in dataSnapshot.children){
@@ -67,60 +93,37 @@ class TransactionsActivity : AppCompatActivity() {
 
         })
 
-        binding.load.setOnClickListener {
-            getTransactions2(object : OnGetDataListener{
-                override fun onSuccess(dataSnapshot: DataSnapshot?) {
-                    if (dataSnapshot != null) {
-                        for (transaction in dataSnapshot.children){
-                            database.child("Users").child(Firebase.auth.uid!!).child("transactions").child(transaction.key.toString())
-                            val accountTo = transaction.child("AccountTo").value.toString()
-                            val date = transaction.child("transactionDate").value.toString()
-                            val amount = transaction.child("transactionAmount").value.toString()
-                            transactionList.add(Transaction(transaction.key.toString(), accountTo,amount, date))
-                        }
-                        Log.d("second load", "Updated")
-                        transactionsAdapter.notifyDataSetChanged()
+    }
+
+    private fun getRemainingTransactions() {
+
+        FirebaseManager().getRemainingTransactions(object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                    for (transaction in dataSnapshot.children){
+                        database.child("Users").child(Firebase.auth.uid!!).child("transactions").child(transaction.key.toString())
+                        val accountTo = transaction.child("AccountTo").value.toString()
+                        val date = transaction.child("transactionDate").value.toString()
+                        val amount = transaction.child("transactionAmount").value.toString()
+                        transactionList.add(Transaction(transaction.key.toString(), accountTo,amount, date))
                     }
-
+                    Log.d("second load", "Updated")
+                    transactionsAdapter.notifyDataSetChanged()
                 }
 
-                override fun onStart() {
-                    Log.d("ONSTART", "Started");
-                }
+            }
 
-                override fun onFailure() {
-                    TODO("Not yet implemented")
-                }
+            override fun onStart() {
+                Log.d("ONSTART", "Started");
+            }
 
-
-            })
-
-        }
-
-        binding.backButton2.setOnClickListener {
-            val i = Intent(this, HomePage::class.java)
-            this.startActivity(i)
-        }
+            override fun onFailure() {
+                TODO("Not yet implemented")
+            }
 
 
-    }
+        })
 
-    fun getTransactions1(onGetDataListener: OnGetDataListener) {
-
-        onGetDataListener.onStart()
-
-        database.child("Users").child(Firebase.auth.uid!!).child("transactions").orderByKey().limitToFirst(5).get().addOnSuccessListener {
-            onGetDataListener.onSuccess(it)
-        }
-    }
-
-    fun getTransactions2(onGetDataListener: OnGetDataListener) {
-
-        onGetDataListener.onStart()
-
-        database.child("Users").child(Firebase.auth.uid!!).child("transactions").orderByKey().limitToLast(5).get().addOnSuccessListener {
-            onGetDataListener.onSuccess(it)
-        }
     }
 
 }

@@ -1,9 +1,11 @@
-package sg.edu.np.internshipreport
+package sg.edu.np.internshipreport.transactions
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import sg.edu.np.internshipreport.R
+import sg.edu.np.internshipreport.classes.Transaction
 import java.util.ArrayList
 
 class TransactionsAdapter(context : Context, transactionList : ArrayList<Transaction>) : RecyclerView.Adapter<TransactionsViewHolder>() {

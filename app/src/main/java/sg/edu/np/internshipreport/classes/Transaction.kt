@@ -1,4 +1,4 @@
-package sg.edu.np.internshipreport
+package sg.edu.np.internshipreport.classes
 
 import java.util.*
 

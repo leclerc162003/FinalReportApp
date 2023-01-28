@@ -1,4 +1,4 @@
-package sg.edu.np.internshipreport
+package sg.edu.np.internshipreport.classes
 
 class Account(id : String ="", accountType : String = "", accountBalance : String ="") {
 

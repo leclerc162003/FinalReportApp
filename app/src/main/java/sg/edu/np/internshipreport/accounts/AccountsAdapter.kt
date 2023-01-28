@@ -1,4 +1,4 @@
-package sg.edu.np.internshipreport
+package sg.edu.np.internshipreport.accounts
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,6 +11,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import sg.edu.np.internshipreport.R
+import sg.edu.np.internshipreport.classes.Account
+import sg.edu.np.internshipreport.listeners.OnGetDataListener
 import java.util.ArrayList
 
 class AccountsAdapter(context : Context, accountList : ArrayList<Account>) : RecyclerView.Adapter<AccountsViewHolder>() {

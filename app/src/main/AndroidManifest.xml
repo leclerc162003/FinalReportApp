@@ -14,13 +14,13 @@
         android:theme="@style/Theme.InternshipReport"
         tools:targetApi="31">
         <activity
-            android:name=".OTPActivity"
+            android:name=".otp.OTPActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountsActivity"
+            android:name=".accounts.AccountsActivity"
             android:exported="false" />
         <activity
-            android:name=".TransactionsActivity"
+            android:name=".transactions.TransactionsActivity"
             android:exported="false" />
         <activity
             android:name=".HomePage"
